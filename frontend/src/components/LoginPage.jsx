@@ -10,7 +10,7 @@ function LoginPage({ onLogin }) {
     e.preventDefault()
     const success = onLogin(username, password)
     if (!success) {
-      setError('Invalid username or password1234 !')
+      setError('Invalid username or password!')
     }
   }
 
@@ -18,7 +18,7 @@ function LoginPage({ onLogin }) {
     <div className="login-container">
       <div className="login-card">
         <h1>Welcome</h1>
-        <h2>Your Services Dashboard123</h2>
+        <h2>Your Services Dashboard</h2>
         <form onSubmit={handleSubmit}>
           {error && <div className="error-message">{error}</div>}
           <div className="input-group">
