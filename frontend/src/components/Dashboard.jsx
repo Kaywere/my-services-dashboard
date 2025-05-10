@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ServiceCard from './ServiceCard';
 import AddServiceModal from './AddServiceModal';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://soss.site/api';
-
+const API_URL = import.meta.env.VITE_API_URL;
 function Dashboard({ onLogout }) {
   const [services, setServices] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
