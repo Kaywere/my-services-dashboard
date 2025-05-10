@@ -19,7 +19,10 @@ services:
     container_name: services-backend
     restart: unless-stopped
     volumes:
-      - ./backend/services.json:/app/services.json
+      - type: bind
+        source: ./backend/services.json
+        target: /app/services.json
+        read_only: false
     networks:
       - app-network
     ports:
