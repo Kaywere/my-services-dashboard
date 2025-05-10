@@ -8,7 +8,13 @@ const cors = require('cors');
 const app = express();
 const PORT = 5000;
 
-app.use(cors());
+// backend/server.js
+app.use(cors({
+  origin: ['https://soss.site', 'http://soss.site'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 app.use(bodyParser.json());
 
 const dataFilePath = path.join(__dirname, 'data', 'services.json');

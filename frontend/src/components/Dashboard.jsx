@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ServiceCard from './ServiceCard';
 import AddServiceModal from './AddServiceModal';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://192.168.1.51:5000';
+const API_URL = import.meta.env.VITE_API_URL || 'https://soss.site/api';
 
 function Dashboard({ onLogout }) {
   const [services, setServices] = useState([]);
@@ -11,7 +11,7 @@ function Dashboard({ onLogout }) {
 
   // Fetch data from backend on component mount
   useEffect(() => {
-    fetch(`${API_URL}/api/services`)
+    fetch(`${API_URL}/services`)
       .then(response => response.json())
       .then(data => setServices(data))
       .catch(error => console.error('Error fetching services:', error));
@@ -22,15 +22,14 @@ function Dashboard({ onLogout }) {
       ? services.map(service => (service.id === editingService.id ? newService : service))
       : [...services, newService];
 
-    try {
-      // Save to backend
-      await fetch(`${API_URL}/api/services`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedServices),
-      });
+      try {
+        await fetch(`${API_URL}/services`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedServices),
+        });
 
       // Fetch updated data from backend
       const response = await fetch(`${API_URL}/api/services`);
