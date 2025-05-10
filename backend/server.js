@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 
 const dataFilePath = path.join(__dirname, 'data', 'services.json');
 
-// Read the JSON file
+// backend/server.js
 app.get('/api/services', (req, res) => {
   fs.readFile(dataFilePath, 'utf8', (err, data) => {
     if (err) {
@@ -29,7 +29,6 @@ app.get('/api/services', (req, res) => {
   });
 });
 
-// Write to the JSON file
 app.post('/api/services', (req, res) => {
   const newData = req.body;
   fs.writeFile(dataFilePath, JSON.stringify(newData, null, 2), 'utf8', (err) => {

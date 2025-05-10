@@ -11,8 +11,13 @@ function Dashboard({ onLogout }) {
 
   // Fetch data from backend on component mount
   useEffect(() => {
-    fetch(`${API_URL}/services`)
-      .then(response => response.json())
+    fetch(`${API_URL}/services`)  // This is correct
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then(data => setServices(data))
       .catch(error => console.error('Error fetching services:', error));
   }, []);
@@ -22,17 +27,18 @@ function Dashboard({ onLogout }) {
       ? services.map(service => (service.id === editingService.id ? newService : service))
       : [...services, newService];
 
-      try {
-        await fetch(`${API_URL}/services`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updatedServices),
-        });
+    try {
+      // Save to backend
+      await fetch(`${API_URL}/services`, {  // Removed extra /api
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedServices),
+      });
 
       // Fetch updated data from backend
-      const response = await fetch(`${API_URL}/api/services`);
+      const response = await fetch(`${API_URL}/services`);  // Removed extra /api
       const data = await response.json();
       setServices(data);
     } catch (error) {
@@ -48,7 +54,7 @@ function Dashboard({ onLogout }) {
 
     try {
       // Save to backend
-      await fetch(`${API_URL}/api/services`, {
+      await fetch(`${API_URL}/services`, {  // Removed extra /api
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +63,7 @@ function Dashboard({ onLogout }) {
       });
 
       // Fetch updated data from backend
-      const response = await fetch(`${API_URL}/api/services`);
+      const response = await fetch(`${API_URL}/services`);  // Removed extra /api
       const data = await response.json();
       setServices(data);
     } catch (error) {
