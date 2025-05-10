@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Jellyfin",
+    "url": "https://jellyfin.yourdomain.com",
+    "icon": "🎬"
+  },
+  {
+    "id": 1740997592382,
+    "name": "sada",
+    "url": "https://google.com",
+    "icon": "☁️"
+  },
+  {
+    "id": 1740997600935,
+    "name": "hahaw",
+    "url": "https://google.com",
+    "icon": "🎬"
+  }
+]

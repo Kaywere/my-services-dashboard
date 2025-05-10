@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Jellyfin",
+    "url": "https://jellyfin.yourdomain.com",
+    "icon": "🎬"
+  },
+  {
+    "id": 2,
+    "name": "Nginx",
+    "url": "https://nginx.yourdomain.com",
+    "icon": "🌐"
+  },
+  {
+    "id": 3,
+    "name": "Plex",
+    "url": "https://plex.yourdomain.com",
+    "icon": "📺"
+  },
+  {
+    "id": 4,
+    "name": "Nextcloud",
+    "url": "https://nextcloud.yourdomain.com",
+    "icon": "☁️"
+  }
+]
