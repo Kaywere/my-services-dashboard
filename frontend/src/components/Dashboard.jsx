@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import ServiceCard from './ServiceCard';
 import AddServiceModal from './AddServiceModal';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://192.168.1.51:5000';
+
 function Dashboard({ onLogout }) {
   const [services, setServices] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -9,7 +11,7 @@ function Dashboard({ onLogout }) {
 
   // Fetch data from backend on component mount
   useEffect(() => {
-    fetch('http://localhost:5000/api/services')
+    fetch(`${API_URL}/api/services`)
       .then(response => response.json())
       .then(data => setServices(data))
       .catch(error => console.error('Error fetching services:', error));
@@ -22,7 +24,7 @@ function Dashboard({ onLogout }) {
 
     try {
       // Save to backend
-      await fetch('http://localhost:5000/api/services', {
+      await fetch(`${API_URL}/api/services`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -31,7 +33,7 @@ function Dashboard({ onLogout }) {
       });
 
       // Fetch updated data from backend
-      const response = await fetch('http://localhost:5000/api/services');
+      const response = await fetch(`${API_URL}/api/services`);
       const data = await response.json();
       setServices(data);
     } catch (error) {
@@ -47,7 +49,7 @@ function Dashboard({ onLogout }) {
 
     try {
       // Save to backend
-      await fetch('http://localhost:5000/api/services', {
+      await fetch(`${API_URL}/api/services`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +58,7 @@ function Dashboard({ onLogout }) {
       });
 
       // Fetch updated data from backend
-      const response = await fetch('http://localhost:5000/api/services');
+      const response = await fetch(`${API_URL}/api/services`);
       const data = await response.json();
       setServices(data);
     } catch (error) {
