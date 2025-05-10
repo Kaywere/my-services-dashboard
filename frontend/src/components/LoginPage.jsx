@@ -10,7 +10,7 @@ function LoginPage({ onLogin }) {
     e.preventDefault()
     const success = onLogin(username, password)
     if (!success) {
-      setError('Invalid username or password123 !')
+      setError('Invalid username or password1234 !')
     }
   }
 
