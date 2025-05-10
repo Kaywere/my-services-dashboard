@@ -1,3 +1,4 @@
+# backend/Dockerfile
 FROM node:18-alpine
 
 WORKDIR /app
@@ -5,7 +6,11 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY . .  # This will copy services.json along with other files
+COPY . .
+
+# Create data directory and copy services.json
+RUN mkdir -p /app/data && \
+    cp services.json /app/data/ || echo '{}' > /app/data/services.json
 
 EXPOSE 5000
 

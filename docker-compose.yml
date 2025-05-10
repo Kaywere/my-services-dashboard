@@ -18,6 +18,8 @@ services:
       dockerfile: Dockerfile
     container_name: services-backend
     restart: unless-stopped
+    volumes:
+      - services-data:/app/data
     networks:
       - app-network
     ports:
@@ -26,3 +28,7 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  services-data:
+    name: services-data

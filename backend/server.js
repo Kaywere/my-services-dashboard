@@ -11,7 +11,7 @@ const PORT = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
-const dataFilePath = path.join(__dirname, 'services.json');
+const dataFilePath = path.join(__dirname, 'data', 'services.json');
 
 // Read the JSON file
 app.get('/api/services', (req, res) => {
