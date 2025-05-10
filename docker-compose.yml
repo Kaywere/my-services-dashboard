@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: services-frontend
+    restart: unless-stopped
+    networks:
+      - app-network
+    ports:
+      - "8001:80"
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: services-backend
+    restart: unless-stopped
+    volumes:
+      - ./backend/services.json:/app/services.json
+    networks:
+      - app-network
+    ports:
+      - "5000:5000"
+
+networks:
+  app-network:
+    driver: bridge
