@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY . .
+COPY . .  # This will copy services.json along with other files
 
 EXPOSE 5000
 

@@ -18,11 +18,6 @@ services:
       dockerfile: Dockerfile
     container_name: services-backend
     restart: unless-stopped
-    volumes:
-      - type: bind
-        source: ./backend/services.json
-        target: /app/services.json
-        read_only: false
     networks:
       - app-network
     ports:
