@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-const iconOptions = ['🌐', '📺', '🎬', '☁️', '📁', '🎮', '🔒', '📊', '📝', '📧'];
+const EMOJI_OPTIONS = ['🎬', '🎮', '📚', '🎵', '📱', '💻', '🌐', '📊', '🎨', '📷'];
 
 function AddServiceModal({ service, onAdd, onCancel }) {
-  const [name, setName] = useState(service ? service.name : '');
-  const [url, setUrl] = useState(service ? service.url : '');
-  const [icon, setIcon] = useState(service ? service.icon : '🌐');
+  const [name, setName] = useState('');
+  const [url, setUrl] = useState('');
+  const [icon, setIcon] = useState('🌐');
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (service) {
@@ -15,53 +16,69 @@ function AddServiceModal({ service, onAdd, onCancel }) {
     }
   }, [service]);
 
+  const validateForm = () => {
+    const newErrors = {};
+    if (!name) newErrors.name = 'Name is required';
+    if (!url) newErrors.url = 'URL is required';
+    if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
+      newErrors.url = 'URL must start with http:// or https://';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name && url) {
-      onAdd({ id: service ? service.id : Date.now(), name, url, icon });
+    if (validateForm()) {
+      onAdd({
+        id: service?.id || Date.now(),
+        name,
+        url,
+        icon
+      });
     }
   };
 
   return (
-    <div className="modal-backdrop">
+    <div className="modal-overlay">
       <div className="modal-content">
         <h2>{service ? 'Edit Service' : 'Add New Service'}</h2>
         <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label htmlFor="service-name">Service Name</label>
+          <div className="form-group">
+            <label htmlFor="name">Service Name</label>
             <input
               type="text"
-              id="service-name"
+              id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Jellyfin"
-              required
+              className={errors.name ? 'error' : ''}
             />
+            {errors.name && <span className="error-message">{errors.name}</span>}
           </div>
 
-          <div className="input-group">
-            <label htmlFor="service-url">Service URL</label>
+          <div className="form-group">
+            <label htmlFor="url">Service URL</label>
             <input
               type="url"
-              id="service-url"
+              id="url"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://your-service.com"
-              required
+              className={errors.url ? 'error' : ''}
             />
+            {errors.url && <span className="error-message">{errors.url}</span>}
           </div>
 
-          <div className="input-group">
-            <label>Choose Icon</label>
-            <div className="icon-selector">
-              {iconOptions.map((option) => (
+          <div className="form-group">
+            <label>Icon</label>
+            <div className="emoji-picker">
+              {EMOJI_OPTIONS.map((emoji) => (
                 <button
-                  key={option}
+                  key={emoji}
                   type="button"
-                  className={`icon-option ${icon === option ? 'selected' : ''}`}
-                  onClick={() => setIcon(option)}
+                  className={`emoji-option ${icon === emoji ? 'selected' : ''}`}
+                  onClick={() => setIcon(emoji)}
                 >
-                  {option}
+                  {emoji}
                 </button>
               ))}
             </div>
@@ -71,8 +88,8 @@ function AddServiceModal({ service, onAdd, onCancel }) {
             <button type="button" className="cancel-button" onClick={onCancel}>
               Cancel
             </button>
-            <button type="submit" className="add-button">
-              {service ? 'Save Changes' : 'Add Service'}
+            <button type="submit" className="submit-button">
+              {service ? 'Update Service' : 'Add Service'}
             </button>
           </div>
         </form>

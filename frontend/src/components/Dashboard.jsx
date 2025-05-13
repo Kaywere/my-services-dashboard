@@ -2,71 +2,96 @@ import React, { useState, useEffect } from 'react';
 import ServiceCard from './ServiceCard';
 import AddServiceModal from './AddServiceModal';
 
-const API_URL = import.meta.env.VITE_API_URL;
-function Dashboard({ onLogout }) {
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+function Dashboard({ onLogout, user }) {
   const [services, setServices] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingService, setEditingService] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Fetch data from backend on component mount
   useEffect(() => {
-    fetch(`${API_URL}/services`)  // This is correct
+    const token = localStorage.getItem('token');
+    
+    fetch(`${API_URL}/services`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
       .then(response => {
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error('Failed to fetch services');
         }
         return response.json();
       })
-      .then(data => setServices(data))
-      .catch(error => console.error('Error fetching services:', error));
+      .then(data => {
+        setServices(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching services:', error);
+        setLoading(false);
+      });
   }, []);
 
   const handleAddService = async (newService) => {
-    const updatedServices = editingService
-      ? services.map(service => (service.id === editingService.id ? newService : service))
-      : [...services, newService];
-
+    const token = localStorage.getItem('token');
     try {
-      // Save to backend
-      await fetch(`${API_URL}/services`, {  // Removed extra /api
-        method: 'POST',
+      const isUpdate = editingService !== null;
+      const url = isUpdate 
+        ? `${API_URL}/services/${editingService.id}`
+        : `${API_URL}/services`;
+      
+      const response = await fetch(url, {
+        method: isUpdate ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(updatedServices),
+        body: JSON.stringify(newService),
       });
 
-      // Fetch updated data from backend
-      const response = await fetch(`${API_URL}/services`);  // Removed extra /api
-      const data = await response.json();
-      setServices(data);
-    } catch (error) {
-      console.error('Error saving services:', error);
-    }
+      if (!response.ok) {
+        throw new Error(`Failed to ${isUpdate ? 'update' : 'add'} service`);
+      }
 
-    setShowAddModal(false);
-    setEditingService(null);
+      const updatedService = await response.json();
+      
+      if (isUpdate) {
+        setServices(prevServices => 
+          prevServices.map(service => 
+            service.id === updatedService.id ? updatedService : service
+          )
+        );
+      } else {
+        setServices(prevServices => [...prevServices, updatedService]);
+      }
+      
+      setShowAddModal(false);
+      setEditingService(null);
+    } catch (error) {
+      console.error(`Error ${editingService ? 'updating' : 'adding'} service:`, error);
+    }
   };
 
   const handleDeleteService = async (id) => {
-    const updatedServices = services.filter(service => service.id !== id);
-
+    const token = localStorage.getItem('token');
     try {
-      // Save to backend
-      await fetch(`${API_URL}/services`, {  // Removed extra /api
-        method: 'POST',
+      const response = await fetch(`${API_URL}/services/${id}`, {
+        method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedServices),
+          'Authorization': `Bearer ${token}`
+        }
       });
 
-      // Fetch updated data from backend
-      const response = await fetch(`${API_URL}/services`);  // Removed extra /api
-      const data = await response.json();
-      setServices(data);
+      if (!response.ok) {
+        throw new Error('Failed to delete service');
+      }
+
+      setServices(prevServices => prevServices.filter(service => service.id !== id));
     } catch (error) {
-      console.error('Error saving services:', error);
+      console.error('Error deleting service:', error);
     }
   };
 
@@ -75,10 +100,18 @@ function Dashboard({ onLogout }) {
     setShowAddModal(true);
   };
 
+  if (loading) {
+    return (
+      <div className="dashboard-loading">
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <h1>My Services Dashboard</h1>
+        <h1>Welcome, {user?.username}!</h1>
         <div className="header-buttons">
           <button className="add-button" onClick={() => setShowAddModal(true)}>
             Add Service
@@ -89,16 +122,32 @@ function Dashboard({ onLogout }) {
         </div>
       </header>
 
-      <div className="services-grid">
-        {services.map(service => (
-          <ServiceCard
-            key={service.id}
-            service={service}
-            onDelete={handleDeleteService}
-            onEdit={handleEditService}
-          />
-        ))}
-      </div>
+      {services.length === 0 ? (
+        <div className="empty-state">
+          <div className="empty-state-content">
+            <div className="empty-state-icon">📦</div>
+            <h2>No Services Yet</h2>
+            <p>Start by adding your first service to your dashboard</p>
+            <button 
+              className="add-first-service-button"
+              onClick={() => setShowAddModal(true)}
+            >
+              Add Your First Service
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="services-grid">
+          {services.map(service => (
+            <ServiceCard
+              key={service.id}
+              service={service}
+              onDelete={handleDeleteService}
+              onEdit={handleEditService}
+            />
+          ))}
+        </div>
+      )}
 
       {showAddModal && (
         <AddServiceModal

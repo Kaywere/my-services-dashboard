@@ -6,35 +6,35 @@ import './App.css'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [user, setUser] = useState(null)
   
   // Check if user is already logged in when the app loads
   useEffect(() => {
-    const loggedInStatus = localStorage.getItem('isLoggedIn')
-    if (loggedInStatus === 'true') {
+    const token = localStorage.getItem('token')
+    const savedUser = localStorage.getItem('user')
+    
+    if (token && savedUser) {
       setIsLoggedIn(true)
+      setUser(JSON.parse(savedUser))
     }
   }, [])
 
-  const handleLogin = (username, password) => {
-    // This is a simple mock authentication
-    // In a real app, you would validate against a backend
-    if (username && password) {
-      setIsLoggedIn(true)
-      localStorage.setItem('isLoggedIn', 'true')
-      return true
-    }
-    return false
+  const handleLogin = (userData) => {
+    setIsLoggedIn(true)
+    setUser(userData)
   }
 
   const handleLogout = () => {
     setIsLoggedIn(false)
-    localStorage.removeItem('isLoggedIn')
+    setUser(null)
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
   }
 
   return (
     <div className="app">
       {isLoggedIn ? (
-        <Dashboard onLogout={handleLogout} />
+        <Dashboard onLogout={handleLogout} user={user} />
       ) : (
         <LoginPage onLogin={handleLogin} />
       )}
