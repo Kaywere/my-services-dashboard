@@ -33,7 +33,9 @@ function ServiceCard({ service, onDelete, onEdit }) {
 
       {/* Card Content */}
       <div className="card-content">
-        <div className="service-icon">{service.icon}</div>
+        <div className="service-icon">
+          {service.icon}
+        </div>
         <h3 className="service-name">{service.name}</h3>
         <p className="service-url">{service.url}</p>
       </div>

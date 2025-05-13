@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import IconSelector from './IconSelector';
 
 const EMOJI_OPTIONS = ['🎬', '🎮', '📚', '🎵', '📱', '💻', '🌐', '📊', '🎨', '📷'];
 
 function AddServiceModal({ service, onAdd, onCancel }) {
   const [name, setName] = useState('');
   const [url, setUrl] = useState('');
-  const [icon, setIcon] = useState('🌐');
+  const [icon, setIcon] = useState('fa-globe');
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -70,18 +71,10 @@ function AddServiceModal({ service, onAdd, onCancel }) {
 
           <div className="form-group">
             <label>Icon</label>
-            <div className="emoji-picker">
-              {EMOJI_OPTIONS.map((emoji) => (
-                <button
-                  key={emoji}
-                  type="button"
-                  className={`emoji-option ${icon === emoji ? 'selected' : ''}`}
-                  onClick={() => setIcon(emoji)}
-                >
-                  {emoji}
-                </button>
-              ))}
-            </div>
+            <IconSelector
+              selectedIcon={icon}
+              onSelect={setIcon}
+            />
           </div>
 
           <div className="modal-buttons">
