@@ -37,12 +37,21 @@
   --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --transition-speed: 0.3s;
+
+  /* Dark Theme Colors */
+  --dark-background: #1a1a1a;
+  --dark-card: #2d2d2d;
+  --dark-text: #ffffff;
+  --dark-text-light: #a0a0a0;
+  --dark-border: #404040;
+  --dark-hover: #3d3d3d;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 html, body {
@@ -270,10 +279,8 @@ h6 { font-size: 1rem; }
 
 .header-buttons {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
-  width: 100%;
-  justify-content: center;
-  position: static;
 }
 
 .add-button, .logout-button {
@@ -840,4 +847,127 @@ h6 { font-size: 1rem; }
 
 .service-card:hover .service-icon {
   transform: scale(1.1);
+}
+
+/* Add dark theme class */
+.dark-theme {
+  --background-color: var(--dark-background);
+  --card-color: var(--dark-card);
+  --text-color: var(--dark-text);
+  --text-light: var(--dark-text-light);
+  --background-dark: var(--dark-border);
+  --background-light: var(--dark-hover);
+  --card-hover: var(--dark-hover);
+  --secondary-color: var(--dark-text);
+  --secondary-light: var(--dark-text-light);
+}
+
+/* Add these theme toggle styles */
+.theme-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  margin: 0 1rem;
+}
+
+.theme-toggle {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  background: var(--background-dark);
+  border-radius: 15px;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle::before {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  background: var(--primary-color);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .theme-toggle {
+  background: var(--primary-dark);
+}
+
+.dark-theme .theme-toggle::before {
+  transform: translateX(30px);
+  background: #fff;
+}
+
+.theme-toggle i {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+.theme-toggle .sun-icon {
+  right: 8px;
+}
+
+.theme-toggle .moon-icon {
+  left: 8px;
+}
+
+/* Update header buttons to accommodate the new toggle */
+.header-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Add these styles for the login page theme toggle */
+.theme-toggle-container {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+/* Update login container background for dark theme */
+.dark-theme .login-container {
+  background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+}
+
+.dark-theme .login-container::before {
+  opacity: 0.2;
+}
+
+/* Update modal styles for dark theme */
+.dark-theme .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.dark-theme .modal-content {
+  background: var(--dark-card);
+  color: var(--dark-text);
+}
+
+.dark-theme .form-group input {
+  background-color: var(--dark-hover);
+  color: var(--dark-text);
+  border-color: var(--dark-border);
+}
+
+.dark-theme .form-group input:focus {
+  background-color: var(--dark-card);
+}
+
+.dark-theme .cancel-button {
+  background-color: var(--dark-hover);
+  color: var(--dark-text);
+}
+
+.dark-theme .cancel-button:hover {
+  background-color: var(--dark-border);
 }

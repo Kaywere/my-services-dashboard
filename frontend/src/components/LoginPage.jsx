@@ -1,7 +1,7 @@
 // components/LoginPage.jsx
 import React, { useState } from 'react'
 
-function LoginPage({ onLogin }) {
+function LoginPage({ onLogin, themeContext }) {
   const [isLogin, setIsLogin] = useState(true) // Toggle between login and register
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')

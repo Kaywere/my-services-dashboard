@@ -4,7 +4,7 @@ import AddServiceModal from './AddServiceModal';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-function Dashboard({ onLogout, user }) {
+function Dashboard({ onLogout, user, themeContext }) {
   const [services, setServices] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingService, setEditingService] = useState(null);
@@ -112,10 +112,21 @@ function Dashboard({ onLogout, user }) {
     <div className="dashboard">
       <header className="dashboard-header">
         <h1>Welcome, {user?.username}!</h1>
-        <div className="header-buttons">
+        <div className="header-buttons">       
+           <div className="theme-toggle-wrapper">
+            <button 
+              className="theme-toggle" 
+              onClick={themeContext.toggleTheme}
+              aria-label="Toggle theme"
+            >
+              <i className="fas fa-sun sun-icon"></i>
+              <i className="fas fa-moon moon-icon"></i>
+            </button>
+          </div>
           <button className="add-button" onClick={() => setShowAddModal(true)}>
             Add Service
           </button>
+  
           <button className="logout-button" onClick={onLogout}>
             Logout
           </button>
