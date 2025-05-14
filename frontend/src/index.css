@@ -357,11 +357,12 @@ h6 { font-size: 1rem; }
 
 .service-icon {
   font-size: 2rem;
+  scale: 1.6;
   margin-bottom: 0.25rem;
   transition: transform var(--transition-speed) ease;
 }
 
-.service-card:hover .service-icon {
+.service-card:hover  {
   transform: scale(1.1);
 }
 
@@ -871,53 +872,41 @@ h6 { font-size: 1rem; }
 
 .theme-toggle {
   position: relative;
-  width: 60px;
-  height: 30px;
-  background: var(--background-dark);
-  border-radius: 15px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: white;
   cursor: pointer;
   border: none;
-  padding: 0;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.theme-toggle::before {
-  content: '';
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  top: 3px;
-  left: 3px;
-  background: var(--primary-color);
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.dark-theme .theme-toggle {
-  background: var(--primary-dark);
-}
-
-.dark-theme .theme-toggle::before {
-  transform: translateX(30px);
-  background: #fff;
-}
-
-.theme-toggle i {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 14px;
-  color: var(--text-color);
+.theme-toggle .sun-icon,
+.theme-toggle .moon-icon {
+  font-size: 20px;
   transition: all 0.3s ease;
 }
 
 .theme-toggle .sun-icon {
-  right: 8px;
+  display: none;
 }
 
-.theme-toggle .moon-icon {
-  left: 8px;
+.dark-theme .theme-toggle {
+  background: #2c2c2c;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.dark-theme .theme-toggle .moon-icon {
+  display: none;
+}
+
+.dark-theme .theme-toggle .sun-icon {
+  display: block;
+  color: white;
 }
 
 /* Update header buttons to accommodate the new toggle */
