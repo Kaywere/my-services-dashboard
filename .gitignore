@@ -30,4 +30,4 @@ yarn-error.log*
 *.swo
 
 # Database configuration
-backend/config/db.js
+#backend/config/db.js
